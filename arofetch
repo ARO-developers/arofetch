@@ -53,8 +53,15 @@ function get_info(){
 
 #main
 get_info
-topbar="${R}$users${W}@${R}$host"
+
+topbar="$user@$host"
 topbar_len=${#topbar}
+topline=""
+echo $topbar_len, $topbar
+for i in {1..$topbar_len}
+do
+        topline+="_"
+done
 
 cat << EOF
 
