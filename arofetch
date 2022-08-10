@@ -31,20 +31,44 @@ function get_info(){
 	if [[ "$OSTYPE" == "linux-gnu" ]]; then
 		#linux part
 		
+		user=$(whoami)
+		uptime=$(uptime -p)
+	        shell=$SHELL  
+		screen=$(xdpyinfo | awk '/dimensions:/ { print $2 }')
+                cpu=$(echo $(cat /proc/cpuinfo | grep -m 1 -i 'model name')| cut -d':' -f 2)
+	
+		audio=$(echo $(lspci | grep -m 1 -i 'Audio device')| cut -d':' -f 3)
+		
+		network=$(echo $(lspci | grep -m 1 -i 'Network controller')| cut -d':' -f 3)
+		
+		gpu=$(echo $(lspci | grep -m 1 -i 'VGA compatible controller')| cut -d':' -f 3)		
+
 		if [ -f /etc/os-release ]; then
 			. /etc/os-release
 			os=$NAME
 			kernel=$VERSION_ID
+			dist=$ID
 		else
 			os=$(uname -s)
 			kernel=$(uname -r)
+			dist="" #I dunno how to check os version the other way
 		fi		
 
-		user=$(whoami)
-		host=$(hostname)
-		
-		uptime=$(uptime -p)
-		shell=$SHELL
+		if [[ "$dist" == "arch" || "$dist" == "manjaro" ]]; then # for rolling releases
+			# . /proc/sys/kernel/hostname
+			host=$(cat /proc/sys/kernel/hostname)
+
+		elif [[ "$dist" == "debian" || "$dist" == "ubuntu" ]]; then #for deb-like releases
+			
+			host=$(hostname)
+	
+		else
+			
+
+			if (( ${#user} == 0 )); then
+				user=$USER
+			fi
+		fi
 		
 	else
 		echo "ERROR: You have different system other than linux, Weirdo."
@@ -56,32 +80,40 @@ get_info
 
 topbar="$user@$host"
 topbar_len=${#topbar}
-topline=""
-echo $topbar_len, $topbar
-for i in {1..$topbar_len}
-do
-        topline+="_"
-done
 
 cat << EOF
 
        ${B}*#################################################################*
        ${B}*################${Y}*(/**/(/(${B}####${Y}//*${B}#${Y}/**${B}(####${Y}*${B}/((((${Y}*${B}#################*
        ${B}*##############${Y}(**********/(${B}#${Y}(********//***********/${B}##############*
-       ${B}*##############/(//#${Y}(*(****/${B}#${Y}(****(${B}(##${Y}(****(${B}###${Y}/****/${B}#############*
-       ${B}*##############${Y}(******/****/${B}#${Y}(****(${B}###${Y}/***/${B}#####${Y}/***(${B}#############*
-       ${B}*#############${Y}/***/${B}###${Y}(****/${B}#${Y}(****(${B}###${Y}/****/${B}###${Y}/****/${B}#############*
-       ${B}*#############${Y}/************/${B}#${Y}(****(${B}####${Y}/***********/${B}##############*
-       ${B}*###############${Y}(*//*/#/(/(${B}###${Y}*(*${B}#########/${Y}*(((*${B}(########(*.     ${R} ..,,*  
-       ${B}*##########################################/. ${R}./(####################
-       ${B}*#################################/  ${R}*#############################.
-      ${R}*##( ${B}/######################* ${R}.(#############################(((((.
-${R}, *########## ${B}#############* ${R}.################*
+       ${B}*##############/(//#${Y}(*(****/${B}#${Y}(****(${B}(##${Y}(****(${B}###${Y}/****/${B}#############*			
+       ${B}*##############${Y}(******/****/${B}#${Y}(****(${B}###${Y}/***/${B}#####${Y}/***(${B}#############*			
+       ${B}*#############${Y}/***/${B}###${Y}(****/${B}#${Y}(****(${B}###${Y}/****/${B}###${Y}/****/${B}#############*		
+       ${B}*#############${Y}/************/${B}#${Y}(****(${B}####${Y}/***********/${B}##############*				
+       ${B}*###############${Y}(*//*/#/(/(${B}###${Y}*(*${B}#########/${Y}*(((*${B}(########(*.     ${R} ..,,*  		
+       ${B}*##########################################/. ${R}./(####################						
+       ${B}*#################################/  ${R}*#############################.						
+      ${R}*##( ${B}/######################* ${R}.(#############################(((((.						
+${R}, *########## ${B}#############* ${R}.################*									
     ${R}.  *#######,${B}(#####. ${R}/##########(,
          ${R}(  #####, ,########,
                ${R}.######/
 
-topbar
+${R}________________
+${R}|${Y}$topbar
+${R}|_______________
+${R}|${B}OS:${Y} $os
+${R}|${B}Host:${Y} $host
+${R}|${B}Kernel:${Y} $kernel
+${R}|${B}Uptime:${Y} $uptime
+${R}|${B}Shell:${Y} $shell
+${R}|${B}Resolution:${Y} $screen
+${R}|${B}CPU:${Y} $cpu
+${R}|${B}GPU:${Y} $gpu
+${R}|${B}Audio device:${Y} $audio
+${R}|${B}Network Controller:${Y} $network
+${R}|_______________
+
 
 ${N}
 EOF
