@@ -1,2 +1,2 @@
 # arofetch
-a cool neofetch ripoff in theme of ARO water, enjoy
+a cool neofetch theme of ARO water, enjoy
