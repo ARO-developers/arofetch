@@ -1,4 +1,4 @@
 # arofetch
 a cool neofetch theme of ARO water, enjoy
 
-![zde je screenshot](Screenshot.png "arofetch screenshot")
+![zde je screenshot](obrazek.png "arofetch screenshot")
