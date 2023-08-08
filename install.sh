@@ -22,9 +22,11 @@ if echo "$PATH" | grep -q "$HOME/.local/bin" && echo "$PATH" | grep -q "/usr/loc
 
 elif echo "$PATH" | grep -q "$HOME/.local/bin"; then
     echo ".local/bin in PATH, going to copy arofetch there..."
+    installation_path="$HOME/.local/bin"
 
 elif echo "$PATH" | grep -q "/usr/local/bin"; then
     echo "/usr/local/bin in PATH, going to copy arofetch there..."
+    installation_path="/usr/local/bin"
 else
     echo "you dont have $HOME/.local/bin or /usr/local/bin in PATH, aborting installation!"
     return
