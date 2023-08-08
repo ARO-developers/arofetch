@@ -11,8 +11,9 @@ This amazing script is very human, in order to have this godly terminal app func
 
 1) `git clone https://github.com/ARO-developers/arofetch.git`
 clone this github repo
-2) `sh install.sh` install arofetch for it to be global
-3) put command `arofetch` into `.zshrc`, `.bashrc` etc.
+2) `cd arofetch`
+3) `sh install.sh` install arofetch for it to be global
+4) put command `arofetch` into `.zshrc`, `.bashrc` etc.
 depending on the terminal you are using.
 
 **NOTE:** Do not delete this repository! It will be helpful for you to update arofetch with any upcoming updates.
