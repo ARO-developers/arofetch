@@ -21,6 +21,7 @@ depending on the terminal you are using.
 ## Updating
 
 Updating is simple, just run `sh install.sh update` and whole arofetch script will be reinstalled.
+If you want to update everything except `arofetch` script, just do a simple `git pull`
 
 # Summary
 
